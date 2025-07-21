@@ -1,5 +1,7 @@
 # 🔀 Privacy Redirector
 
+> This project is no longer being maintained. I don't think it makes sense to continue developing this project as I am now using [Libredirect](https://libredirect.github.io/) myself. Thank you for all your support.
+
 [![Greasy Fork](https://img.shields.io/greasyfork/v/436359-privacy-redirector?style=flat-square)](https://greasyfork.org/scripts/436359-privacy-redirector)
 [![Greasy Fork](https://img.shields.io/greasyfork/dt/436359-privacy-redirector?style=flat-square)](https://greasyfork.org/scripts/436359-privacy-redirector)
 [![GitHub](https://img.shields.io/github/license/dybdeskarphet/privacy-redirector?style=flat-square)](./LICENSE)
@@ -29,7 +31,6 @@ By [clicking this URL](https://raw.githubusercontent.com/dybdeskarphet/privacy-r
 2. **Userscript Manager**
 
    Add the copied script to your userscript manager. If you don't have a userscript manager, you can use one of the following:
-
    - [Violentmonkey](https://violentmonkey.github.io/) (Edge, Chrome, Firefox)
    - [Tampermonkey](https://www.tampermonkey.net/) (Chrome, Firefox, Safari, Edge)
    - [Greasemonkey](https://www.greasespot.net/) (Firefox)
