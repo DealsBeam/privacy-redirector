@@ -1156,132 +1156,63 @@ async function redirectTwitch() {
 
 const urlHostname = window.location.hostname;
 
-switch (urlHostname) {
-  case "www.instagram.com":
-    redirectInstagram();
-    break;
+// ⚡ Bolt: Replaced a large switch statement with a direct lookup map for performance.
+// This provides a faster O(1) lookup compared to the O(n) nature of a switch statement.
+const exactRedirects = {
+  "www.instagram.com": redirectInstagram,
+  "twitter.com": redirectTwitter,
+  "mobile.twitter.com": redirectTwitter,
+  "x.com": redirectTwitter,
+  "mobile.x.com": redirectTwitter,
+  "www.youtube.com": () => redirectYoutube(youtubeFrontend),
+  "m.youtube.com": () => redirectYoutube(youtubeFrontend),
+  "www.youtube-nocookie.com": () => redirectYoutube(youtubeFrontend),
+  "www.tiktok.com": redirectTiktok,
+  "music.youtube.com": () => redirectYoutube(youtubeMusicFrontend),
+  "news.ycombinator.com": redirectHackerNews,
+  "translate.google.com": redirectGTranslate,
+  "www.reuters.com": redirectReuters,
+  "www.imdb.com": redirectImdb,
+  "m.imdb.com": redirectImdb,
+  "www.quora.com": redirectQuora,
+  "www.google.com": redirectGoogle,
+  "www.goodreads.com": redirectGoodreads,
+  "genius.com": redirectGenius,
+  "stackoverflow.com": redirectStackoverflow,
+  "f4.bcbits.com": redirectBandcamp,
+  "t4.bcbits.com": redirectBandcamp,
+  "www.deviantart.com": redirectDeviantart,
+  "i.pinimg.com": redirectPinterest,
+  "soundcloud.com": redirectSoundcloud,
+  "m.soundcloud.com": redirectSoundcloud,
+  "www.pixiv.net": redirectPixiv,
+  "www.deepl.com": redirectDeepl,
+  "twitch.tv": redirectTwitch,
+  "www.twitch.tv": redirectTwitch,
+};
 
-  case "twitter.com":
-  case "mobile.twitter.com":
-  case "x.com":
-  case "mobile.x.com":
-    redirectTwitter();
-    break;
+const includesRedirects = [
+  { pattern: "reddit.com", redirect: redirectReddit },
+  { pattern: "medium.com", redirect: () => redirectMedium(mediumFrontend) },
+  { pattern: "imgur.com", redirect: redirectImgur },
+  { pattern: "imgur.io", redirect: redirectImgur },
+  { pattern: "wikipedia.org", redirect: redirectWikipedia },
+  { pattern: "fandom.com", redirect: redirectFandom },
+  { pattern: "bandcamp.com", redirect: redirectBandcamp },
+  { pattern: "pinterest.com", redirect: redirectPinterest },
+  { pattern: "tumblr.com", redirect: redirectTumblr },
+];
 
-  case "www.youtube.com":
-  case "m.youtube.com":
-  case "www.youtube-nocookie.com":
-    redirectYoutube(youtubeFrontend);
-    break;
-
-  case "www.tiktok.com":
-    redirectTiktok();
-    break;
-
-  case "music.youtube.com":
-    redirectYoutube(youtubeMusicFrontend);
-    break;
-
-  case "news.ycombinator.com":
-    redirectHackerNews();
-    break;
-
-  case "translate.google.com":
-    redirectGTranslate();
-    break;
-
-  case "www.reuters.com":
-    redirectReuters();
-    break;
-
-  case "www.imdb.com":
-  case "m.imdb.com":
-    redirectImdb();
-    break;
-
-  case "www.quora.com":
-    redirectQuora();
-    break;
-
-  case "www.google.com":
-    redirectGoogle();
-    break;
-
-  case "www.goodreads.com":
-    redirectGoodreads();
-    break;
-
-  case "genius.com":
-    redirectGenius();
-    break;
-
-  case "stackoverflow.com":
-    redirectStackoverflow();
-    break;
-
-  case "f4.bcbits.com":
-  case "t4.bcbits.com":
-    redirectBandcamp();
-    break;
-
-  case "www.deviantart.com":
-    redirectDeviantart();
-    break;
-
-  case "i.pinimg.com":
-    redirectPinterest();
-    break;
-
-  case "soundcloud.com":
-  case "m.soundcloud.com":
-    redirectSoundcloud();
-    break;
-
-  case "www.pixiv.net":
-    redirectPixiv();
-    break;
-
-  case "www.deepl.com":
-    redirectDeepl();
-    break;
-
-  case "twitch.tv":
-  case "www.twitch.tv":
-    redirectTwitch();
-    break;
-
-  case urlHostname.includes("reddit.com") ? urlHostname : 0:
-    redirectReddit();
-    break;
-
-  case urlHostname.includes("medium.com") ? urlHostname : 0:
-    redirectMedium(mediumFrontend);
-    break;
-
-  case urlHostname.includes("imgur.com") ? urlHostname : 0:
-  case urlHostname.includes("imgur.io") ? urlHostname : 0:
-    redirectImgur();
-    break;
-
-  case urlHostname.includes("wikipedia.org") ? urlHostname : 0:
-    redirectWikipedia();
-    break;
-
-  case urlHostname.includes("fandom.com") ? urlHostname : 0:
-    redirectFandom();
-    break;
-
-  case urlHostname.includes("bandcamp.com") ? urlHostname : 0:
-    redirectBandcamp();
-    break;
-
-  case urlHostname.includes("pinterest.com") ? urlHostname : 0:
-    redirectPinterest();
-    break;
-
-  case urlHostname.includes("tumblr.com") ? urlHostname : 0:
-    redirectTumblr();
-    break;
+const redirectFunction = exactRedirects[urlHostname];
+if (redirectFunction) {
+  redirectFunction();
+} else {
+  for (const { pattern, redirect } of includesRedirects) {
+    if (urlHostname.includes(pattern)) {
+      redirect();
+      break;
+    }
+  }
 }
 
 // export module for the test in github action
